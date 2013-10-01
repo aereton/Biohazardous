@@ -1,3 +1,8 @@
+//===== Copyright © 2013, SpotlightEntertainmentStudios, All rights reserved. ========
+//
+// Purpose: Biohazardous Player Class
+//
+//====================================================================================
 #ifndef BIO_PLAYER_H
 #define BIO_PLAYER_H
 
@@ -14,6 +19,10 @@ public:
 
 	void Precache();
 	void Spawn();
+
+	bool IsInterested() const;
+	void GetInterested();
+	void GetUninterested();
 
 	CNetworkVar( bool, m_bIsInterested );
 protected:

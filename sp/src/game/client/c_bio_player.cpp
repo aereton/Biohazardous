@@ -1,3 +1,8 @@
+//===== Copyright © 2013, SpotlightEntertainmentStudios, All rights reserved. ========
+//
+// Purpose: Biohazardous Player Class
+//
+//====================================================================================
 #include "cbase.h"
 #include "c_bio_player.h"
 

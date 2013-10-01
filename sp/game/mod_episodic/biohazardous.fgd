@@ -1,0 +1,12 @@
+@include "base.fgd"
+
+@SolidClass base(Targetname) = bio_trigger_poi : "Point of Interest"
+[
+	StartDisabled(choices) : "Start Disabled" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	AffectedEntity(string) : "Affected Entity"
+	EffectedEntity(string) : "Original Entity for FX"
+]
