@@ -1,7 +1,11 @@
 //===== Copyright © 2013, SpotlightEntertainmentStudios, All rights reserved. ========
 //
 // Purpose: Point of Interests V0.3
-//
+//------------------------------------------------------------------------------------
+//			Note:	No-Biohazardous-Entities won't be visible if Disabled!
+//					Use an interactable entity for AffectedEntity instead!
+//			Note2:	If you're using an Biohazardous specific entity, you want to
+//					use this as Affected- AND EffectedEntity.
 //====================================================================================
 #include "cbase.h"
 #include "triggers.h"
@@ -28,6 +32,9 @@ public:
 	void StartTouch( CBaseEntity *pOther );
 	void EndTouch( CBaseEntity *pOther );
 
+	void Interested( void );
+	void NotInterested( void );
+
 private:
 	bool m_bDisabled;
 	bool m_bInterested;
@@ -53,9 +60,9 @@ END_DATADESC()
 LINK_ENTITY_TO_CLASS( bio_trigger_poi, CPointOfInterest );
 
 
-//------------------------------------------------------------------------------
+//==============================================================================
 // Purpose: Called when spawning, after keyvalues have been handled.
-//------------------------------------------------------------------------------
+//==============================================================================
 void CPointOfInterest::Spawn( void )
 {
 	BaseClass::Spawn();
@@ -66,42 +73,37 @@ void CPointOfInterest::Spawn( void )
 	SetThink( NULL );
 	RegisterThinkContext( "ViewconeContext" );
 	SetContextThink( NULL, TICK_NEVER_THINK, "ViewconeContext" );
-
-	// TO DO:
-	// Get poi-global point for player
-	//--------------
-	// Disables the affected entity on spawn
-	//--------------
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-	CBaseEntity *pEntResult = gEntList.FindEntityByName( NULL, STRING( m_AffectedEntity ) );
-	variant_t emptyVariant;
-	pEntResult->AcceptInput( "Disable", pPlayer, pEntResult, emptyVariant, 0 );
+//--------------------------------------
+// Disables the affected entity on spawn
+//--------------------------------------
+	NotInterested();
 }
-//------------------------------------------------------------------------------
+//==============================================================================
 // Purpose: checks viewcone state and triggers players state & entity behaviour
-//------------------------------------------------------------------------------
+//==============================================================================
 void CPointOfInterest::EnableThink( void )
 {
-	CBasePlayer* pPlayer = UTIL_GetCommandClient();
+	// Get a pointer to our own Biohazardous-Playerclass
+	CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
 	if( pPlayer)
 	{
 		CBio_Player *pBioPlayer = dynamic_cast<CBio_Player*>(pPlayer);
 		if( !m_bInViewcone )
 		{
-			// ToDo: Entity-Stuff here!
-			// If we're interested, get not!
+			// If we're interested, don't be it anymore!
 			if( pBioPlayer->IsInterested() )
 			{
 				pBioPlayer->GetUninterested();
+				NotInterested();
 			}
 		}
 		else
 		{
-			// ToDo: Entity-Stuff here!
 			// If we're not interested already, get interested!
 			if( !pBioPlayer->IsInterested() )
 			{
 				pBioPlayer->GetInterested();
+				Interested();
 			}
 		}
 		// Please think again..
@@ -109,9 +111,9 @@ void CPointOfInterest::EnableThink( void )
 	}
 	
 }
-//------------------------------------------------------------------------------
+//==============================================================================
 // Purpose: Checks if the specified entity is in Players FOV!
-//------------------------------------------------------------------------------
+//==============================================================================
 void CPointOfInterest::ViewconeThink( void )
 {
 	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
@@ -147,9 +149,9 @@ void CPointOfInterest::ViewconeThink( void )
 }
 
 
-//------------------------------------------------------------------------------
+//==============================================================================
 // Purpose: Starttouch function
-//------------------------------------------------------------------------------
+//==============================================================================
 void CPointOfInterest::StartTouch( CBaseEntity *pOther )
 {
 	// Not if we're disabled
@@ -169,9 +171,9 @@ void CPointOfInterest::StartTouch( CBaseEntity *pOther )
 
 	BaseClass::StartTouch( pOther );
 }
-//------------------------------------------------------------------------------
+//==============================================================================
 // Purpose: Endtouch function
-//------------------------------------------------------------------------------
+//==============================================================================
 void CPointOfInterest::EndTouch( CBaseEntity *pOther )
 {
 	// Not if disabled
@@ -190,17 +192,78 @@ void CPointOfInterest::EndTouch( CBaseEntity *pOther )
 	SetThink( NULL );
 	SetContextThink( NULL, TICK_NEVER_THINK, "ViewconeContext" );
 
+	// We better should set the InViewcone bool to false
+	// Otherwhise we get interested if we're touching the poi but not looking at the AffectedEntity!
+	m_bInViewcone = false;
+
 	// The player should be now uninterested
-	CBasePlayer* pPlayer = UTIL_GetCommandClient();
+	CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
 	if( pPlayer )
 	{
 		CBio_Player *pBioPlayer = dynamic_cast<CBio_Player*>(pPlayer);
 		if( pBioPlayer->IsInterested() )
 		{
 			pBioPlayer->GetUninterested();
+			NotInterested();
 		}
 	}
-	
-
 	BaseClass::EndTouch( pOther );
+}
+//==============================================================================
+// Purpose: Executes the BlinkEffect as well as activates the AffectedEntity
+//------------------------------------------------------------------------------
+// Note:	No-Biohazardous-Entities won't be visible if Disabled!
+//			Use an interactable entity for AffectedEntity instead!
+// Note2:	If you're using an Biohazardous specific entity, you want to
+//			use this as Affected- AND EffectedEntity.
+//==============================================================================
+void CPointOfInterest::Interested( void )
+{
+	// Get Our BasePlayer
+	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	// Get Our AffectedEntity(pEntResult) as well as our EffectedEntity(pEntResultFX)
+	CBaseEntity *pEntResult = gEntList.FindEntityByName( NULL, STRING( m_AffectedEntity ) );
+	CBaseEntity *pEntResultFX = gEntList.FindEntityByName( NULL, STRING( m_EffectedEntity ) );
+	// ToDo
+	variant_t emptyVariant;
+
+	if( pEntResult )
+	{
+		// Enable our AffectedEntity so it can be interacted with
+		pEntResult->AcceptInput( "Enable", pPlayer, pEntResult, emptyVariant, 0 );
+	}
+	if( pEntResultFX )
+	{
+		// Enable ItemBlink on our EffectedEntity
+		pEntResultFX->AddEffects( EF_ITEM_BLINK );
+	}
+}
+//==============================================================================
+// Purpose: Removes the BlinkEffect as well as deactivates the AffectedEntity
+//------------------------------------------------------------------------------
+// Note:	No-Biohazardous-Entities won't be visible if Disabled!
+//			Use an interactable entity for AffectedEntity instead!
+// Note2:	If you're using an Biohazardous specific entity, you want to
+//			use this as Affected- AND EffectedEntity.
+//==============================================================================
+void CPointOfInterest::NotInterested( void )
+{
+	// Get Our BasePlayer
+	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	// Get Our AffectedEntity(pEntResult) as well as our EffectedEntity(pEntResultFX)
+	CBaseEntity *pEntResult = gEntList.FindEntityByName( NULL, STRING( m_AffectedEntity ) );
+	CBaseEntity *pEntResultFX = gEntList.FindEntityByName( NULL, STRING( m_EffectedEntity ) );
+	// ToDo
+	variant_t emptyVariant;
+
+	if( pEntResult )
+	{
+		// Disable our AffectedEntity so it can't be interacted with
+		pEntResult->AcceptInput( "Disable", pPlayer, pEntResult, emptyVariant, 0 );
+	}
+	if( pEntResultFX )
+	{
+		// Disable ItemBlink on our EffectedEntity
+		pEntResultFX->RemoveEffects( EF_ITEM_BLINK );
+	}
 }
