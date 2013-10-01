@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Biohazardous">
       <UniqueIdentifier>{61dd513f-35cd-4aa5-ac58-a88ecb35042f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Biohazardous\Entities">
+      <UniqueIdentifier>{6bd8cd02-d005-4630-b91f-4f4538b35921}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\lib\public\libprotobuf.lib">
@@ -3510,6 +3513,9 @@
     </ClCompile>
     <ClCompile Include="bio_player.cpp">
       <Filter>Source Files\Biohazardous</Filter>
+    </ClCompile>
+    <ClCompile Include="bio_poi.cpp">
+      <Filter>Source Files\Biohazardous\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

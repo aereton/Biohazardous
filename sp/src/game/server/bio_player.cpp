@@ -1,3 +1,8 @@
+//===== Copyright © 2013, SpotlightEntertainmentStudios, All rights reserved. ========
+//
+// Purpose: Biohazardous Player Class
+//
+//====================================================================================
 #include "cbase.h"
 #include "bio_player.h"
 
@@ -32,5 +37,29 @@ void CBio_Player::Spawn()
 {
 	Msg( "YOU'RE NOW AN BIOHAZARDOUS PLAYER! MUHAHAHAHAAHARRRRRR!" );
 	SetModel( PLAYER_MDL );
+	EquipSuit( false );
 	BaseClass::Spawn();
+}
+
+//------------------------------------------------------------------
+// Point of Interests Interaction!!!!
+//------------------------------------------------------------------
+bool CBio_Player::IsInterested() const
+{
+	return m_bIsInterested;
+}
+
+void CBio_Player::GetInterested()
+{
+	m_bIsInterested = true;
+	// Placeholder - information!
+	DevMsg( "The Player is now interested.\n" );
+	
+}
+
+void CBio_Player::GetUninterested()
+{
+	m_bIsInterested = false;
+	// Placeholder - information!
+	DevMsg( "The Player is no longer interested.\n" );
 }

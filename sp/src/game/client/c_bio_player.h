@@ -1,3 +1,8 @@
+//===== Copyright © 2013, SpotlightEntertainmentStudios, All rights reserved. ========
+//
+// Purpose: Biohazardous Player Class
+//
+//====================================================================================
 #ifndef C_BIO_PLAYER_H
 #define C_BIO_PLAYER_H
 
