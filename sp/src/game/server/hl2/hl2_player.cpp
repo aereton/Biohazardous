@@ -293,7 +293,8 @@ static ConCommand toggle_duck("toggle_duck", CC_ToggleDuck, "Toggles duck" );
 
 #ifndef HL2MP
 #ifndef PORTAL
-LINK_ENTITY_TO_CLASS( player, CHL2_Player );
+// Biohazardous: Don't link to the player THIS class!
+//LINK_ENTITY_TO_CLASS( player, CHL2_Player );
 #endif
 #endif
 
