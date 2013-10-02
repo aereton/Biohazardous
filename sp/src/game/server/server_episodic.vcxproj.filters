@@ -1793,6 +1793,9 @@
     <ClInclude Include="bio_player.h">
       <Filter>Source Files\Biohazardous</Filter>
     </ClInclude>
+    <ClInclude Include="bio_medals.h">
+      <Filter>Source Files\Biohazardous\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gamedll_replay.cpp">
@@ -3515,6 +3518,9 @@
       <Filter>Source Files\Biohazardous</Filter>
     </ClCompile>
     <ClCompile Include="bio_poi.cpp">
+      <Filter>Source Files\Biohazardous\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="bio_medals.cpp">
       <Filter>Source Files\Biohazardous\Entities</Filter>
     </ClCompile>
   </ItemGroup>

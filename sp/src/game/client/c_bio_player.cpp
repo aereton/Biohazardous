@@ -8,6 +8,7 @@
 
 IMPLEMENT_CLIENTCLASS_DT( C_Bio_Player, DT_CBio_Player, CBio_Player )
 	RecvPropBool( RECVINFO( m_bIsInterested ) ),
+	RecvPropInt( RECVINFO( m_iDemoMedals ) ),
 END_RECV_TABLE()
 
 C_Bio_Player::C_Bio_Player()

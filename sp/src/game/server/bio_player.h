@@ -20,13 +20,22 @@ public:
 	void Precache();
 	void Spawn();
 
+	// Points of interest
 	bool IsInterested() const;
 	void GetInterested();
 	void GetUninterested();
 
-	CNetworkVar( bool, m_bIsInterested );
-protected:
+	// DemoMedals
+	int GetMedals();
+	int GetMaxMedals();
+	void AddMedal();
+	void SetMedals( int nAmount );
 
+	CNetworkVar( bool, m_bIsInterested );
+	CNetworkVar( int, m_iDemoMedals );
+	CNetworkVar( int, m_iMaxDemoMedals );
+protected:
+	
 private:
 
 };

@@ -10,3 +10,10 @@
 	AffectedEntity(string) : "Affected Entity"
 	EffectedEntity(string) : "Original Entity for FX"
 ]
+@PointClass base(Targetname) studio("models/combine_scanner.mdl")= bio_base_medal : "Demoversion of hidden medals"
+[
+	input Kill(void) : "Kill"
+	input Enable(void) : "Enable"
+	input Disable(void) : "Disable"
+	output OnMedalFound(void) : "Found!"
+]
