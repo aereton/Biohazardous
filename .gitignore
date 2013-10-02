@@ -54,5 +54,7 @@ config.cfg
 # shader files
 *.tmp
 
-*.bsp
-*.ain
+sp/game/mod_episodic/save/
+sp/game/mod_episodic/maps/
+sp/game/mod_episodic/materials/
+sp/game/mod_episodic/sound/
