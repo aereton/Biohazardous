@@ -1,3 +1,0 @@
-"resource/UI/AlphaDemo.res"
-{
-}
