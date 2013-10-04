@@ -1,0 +1,3 @@
+"resource/UI/AlphaDemo.res"
+{
+}

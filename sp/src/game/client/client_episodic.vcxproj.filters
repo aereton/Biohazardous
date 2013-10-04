@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Biohazardous">
       <UniqueIdentifier>{fc712fd7-bcc3-4d8a-b070-c7a5ed0cbe7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Biohazardous\Panels">
+      <UniqueIdentifier>{bbc2a7ba-9a0f-42a2-92dc-4adf5f912828}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\lib\public\libprotobuf.lib">
@@ -1895,6 +1898,9 @@
     <ClInclude Include="c_bio_player.h">
       <Filter>Source Files\Biohazardous</Filter>
     </ClInclude>
+    <ClInclude Include="IAlpha_Demo_Splash.h">
+      <Filter>Source Files\Biohazardous\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mp3player.cpp">
@@ -3417,6 +3423,9 @@
     </ClCompile>
     <ClCompile Include="c_bio_player.cpp">
       <Filter>Source Files\Biohazardous</Filter>
+    </ClCompile>
+    <ClCompile Include="Alpha_Demo_Splash.cpp">
+      <Filter>Source Files\Biohazardous\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

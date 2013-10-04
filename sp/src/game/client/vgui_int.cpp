@@ -23,6 +23,7 @@
 #include <KeyValues.h>
 #include "filesystem.h"
 #include "matsys_controls/matsyscontrols.h"
+#include "IAlpha_Demo_Splash.h"
 
 #ifdef SIXENSE
 #include "sixense/in_sixense.h"
@@ -195,11 +196,15 @@ bool VGui_Startup( CreateInterfaceFn appSystemFactory )
 //-----------------------------------------------------------------------------
 void VGui_CreateGlobalPanels( void )
 {
+	VPANEL GameUiDll = enginevgui->GetPanel( PANEL_GAMEUIDLL );
 	VPANEL gameToolParent = enginevgui->GetPanel( PANEL_CLIENTDLL_TOOLS );
 	VPANEL toolParent = enginevgui->GetPanel( PANEL_TOOLS );
 #if defined( TRACK_BLOCKING_IO )
 	VPANEL gameDLLPanel = enginevgui->GetPanel( PANEL_GAMEDLL );
 #endif
+	//Biohazardous Panels
+	alphademosplash->Create( GameUiDll );
+
 	// Part of game
 	internalCenterPrint->Create( gameToolParent );
 	loadingdisc->Create( gameToolParent );
@@ -229,6 +234,8 @@ void VGui_Shutdown()
 #ifndef _X360
 	MP3Player_Destroy();
 #endif
+	// Biohazardous
+	alphademosplash->Destroy();
 
 	netgraphpanel->Destroy();
 	debugoverlaypanel->Destroy();
