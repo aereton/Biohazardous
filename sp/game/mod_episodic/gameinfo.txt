@@ -1,11 +1,12 @@
 "GameInfo"
 {
-	game 		"My First Episodic Mod"
-	title 		"HALF-LIFE'"
-	title2		""
+	game 		"Biohazardous ALPHA v0.2.131004"
 
 	type		singleplayer_only
 
+	developer	"SpotlightEntertainment"
+	developer_url	"http://www.moddb.com/mods/biohazardous/
+	icon		"icon"
 	FileSystem
 	{
 		SteamAppId				243730		// This sets the app ID in Steam
