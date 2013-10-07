@@ -24,6 +24,7 @@
 #include "filesystem.h"
 #include "matsys_controls/matsyscontrols.h"
 #include "IAlpha_Demo_Splash.h"
+#include "IContact_Form.h"
 
 #ifdef SIXENSE
 #include "sixense/in_sixense.h"
@@ -203,6 +204,7 @@ void VGui_CreateGlobalPanels( void )
 	VPANEL gameDLLPanel = enginevgui->GetPanel( PANEL_GAMEDLL );
 #endif
 	//Biohazardous Panels
+	contactform->Create( GameUiDll );
 	alphademosplash->Create( GameUiDll );
 
 	// Part of game
@@ -235,6 +237,7 @@ void VGui_Shutdown()
 	MP3Player_Destroy();
 #endif
 	// Biohazardous
+	contactform->Destroy();
 	alphademosplash->Destroy();
 
 	netgraphpanel->Destroy();

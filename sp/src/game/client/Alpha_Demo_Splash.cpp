@@ -66,7 +66,7 @@ CAlphaDemoSplash::CAlphaDemoSplash(vgui::VPANEL parent)
 	SetWide( 512 );
 	SetTall( 256 );
 	SetZPos( 1 );
-	SetRoundedCorners( 4 );
+	SetRoundedCorners( 0 );
 
 	SetScheme( vgui::scheme()->LoadSchemeFromFile("resource/SourceScheme.res", "SourceScheme" ) );
 

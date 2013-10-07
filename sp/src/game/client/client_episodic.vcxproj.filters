@@ -1901,6 +1901,9 @@
     <ClInclude Include="IAlpha_Demo_Splash.h">
       <Filter>Source Files\Biohazardous\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="IContact_Form.h">
+      <Filter>Source Files\Biohazardous\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mp3player.cpp">
@@ -3425,6 +3428,9 @@
       <Filter>Source Files\Biohazardous</Filter>
     </ClCompile>
     <ClCompile Include="Alpha_Demo_Splash.cpp">
+      <Filter>Source Files\Biohazardous\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Contact_Form.cpp">
       <Filter>Source Files\Biohazardous\Panels</Filter>
     </ClCompile>
   </ItemGroup>
