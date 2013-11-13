@@ -10,3 +10,15 @@
 	AffectedEntity(string) : "Affected Entity"
 	EffectedEntity(string) : "Original Entity for FX"
 ]
+@SolidClass base(Targetname) = bio_cam_trigger : "Cam Trigger"
+[
+	StartDisabled(choices) : "Start Disabled" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	CamSetupEntity(string) : "CameraSetup Entity"
+]
+@PointClass base(Targetname,Angles) studioprop("models/editor/camera.mdl") = bio_camera : "Camera Setup Entity"
+[
+]

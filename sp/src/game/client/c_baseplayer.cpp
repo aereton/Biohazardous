@@ -1846,11 +1846,14 @@ void C_BasePlayer::ThirdPersonSwitch( bool bThirdperson )
 	{
 		return false;
 	}
-	int ObserverMode = pLocalPlayer->GetObserverMode();
-	if ( ( ObserverMode == OBS_MODE_NONE ) || ( ObserverMode == OBS_MODE_IN_EYE ) )
-	{
-		return !input->CAM_IsThirdPerson() && ( !ToolsEnabled() || !ToolFramework_IsThirdPersonCamera() );
-	}
+	//------------------------
+	// Draw player in firstperson mode!
+	//------------------------
+	//int ObserverMode = pLocalPlayer->GetObserverMode();
+	//if ( ( ObserverMode == OBS_MODE_NONE ) || ( ObserverMode == OBS_MODE_IN_EYE ) )
+	//{
+	//	return !input->CAM_IsThirdPerson() && ( !ToolsEnabled() || !ToolFramework_IsThirdPersonCamera() );
+	//}
 	else
 	{
 		// Not looking at the local player, e.g. in a replay in third person mode or freelook.

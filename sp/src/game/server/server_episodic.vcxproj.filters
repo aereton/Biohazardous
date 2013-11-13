@@ -3517,6 +3517,12 @@
     <ClCompile Include="bio_poi.cpp">
       <Filter>Source Files\Biohazardous\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="bio_camtrigger.cpp">
+      <Filter>Source Files\Biohazardous\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="bio_camera.cpp">
+      <Filter>Source Files\Biohazardous\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
