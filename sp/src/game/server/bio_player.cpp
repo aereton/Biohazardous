@@ -4,6 +4,7 @@
 //
 //====================================================================================
 #include "cbase.h"
+#include "hl2_player.h"
 #include "bio_player.h"
 
 #define PLAYER_MDL "models/player.mdl"
