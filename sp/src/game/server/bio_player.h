@@ -24,6 +24,7 @@ public:
 	void GetInterested();
 	void GetUninterested();
 
+
 	CNetworkVar( bool, m_bIsInterested );
 protected:
 
