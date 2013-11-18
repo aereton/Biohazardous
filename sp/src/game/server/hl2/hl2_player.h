@@ -14,6 +14,7 @@
 #include "hl2_playerlocaldata.h"
 #include "simtimer.h"
 #include "soundenvelope.h"
+#include "singleplayer_animstate.h"
 
 class CAI_Squad;
 class CPropCombineBall;
@@ -284,6 +285,8 @@ public:
 	CSoundPatch *m_sndLeeches;
 	CSoundPatch *m_sndWaterSplashes;
 
+	void SetAnimation( PLAYER_ANIM playerAnim );
+
 protected:
 	virtual void		PreThink( void );
 	virtual	void		PostThink( void );
@@ -362,6 +365,9 @@ private:
 	float				m_flTimeNextLadderHint;	// Next time we're eligible to display a HUD hint about a ladder.
 	
 	friend class CHL2GameMovement;
+
+	CSinglePlayerAnimState *m_pPlayerAnimState;
+	QAngle m_angEyeAngles;
 };
 
 

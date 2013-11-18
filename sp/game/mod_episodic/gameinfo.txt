@@ -1,6 +1,6 @@
 "GameInfo"
 {
-	game 		"Biohazardous ALPHA V0.2.131004"
+	game 		"Biohazardous ALPHA V0.2.131117"
 
 	type		singleplayer_only
 
