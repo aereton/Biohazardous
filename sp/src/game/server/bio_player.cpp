@@ -7,7 +7,7 @@
 #include "hl2_player.h"
 #include "bio_player.h"
 
-#define PLAYER_MDL "models/player.mdl"
+#define PLAYER_MDL "models/Humans/Group03m/female_01.mdl"
 
 
 BEGIN_DATADESC( CBio_Player )
@@ -36,10 +36,10 @@ void CBio_Player::Precache()
 
 void CBio_Player::Spawn()
 {
+	BaseClass::Spawn();
 	Msg( "YOU'RE NOW AN BIOHAZARDOUS PLAYER! MUHAHAHAHAAHARRRRRR!" );
 	SetModel( PLAYER_MDL );
 	EquipSuit( false );
-	BaseClass::Spawn();
 }
 
 //------------------------------------------------------------------

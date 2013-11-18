@@ -1793,6 +1793,9 @@
     <ClInclude Include="bio_player.h">
       <Filter>Source Files\Biohazardous</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\singleplayer_animstate.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gamedll_replay.cpp">
@@ -3522,6 +3525,9 @@
     </ClCompile>
     <ClCompile Include="bio_camera.cpp">
       <Filter>Source Files\Biohazardous\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\singleplayer_animstate.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

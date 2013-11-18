@@ -1904,6 +1904,9 @@
     <ClInclude Include="IContact_Form.h">
       <Filter>Source Files\Biohazardous\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\singleplayer_animstate.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mp3player.cpp">
@@ -3432,6 +3435,9 @@
     </ClCompile>
     <ClCompile Include="Contact_Form.cpp">
       <Filter>Source Files\Biohazardous\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\singleplayer_animstate.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
