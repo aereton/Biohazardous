@@ -37,7 +37,6 @@ void CBio_Player::Precache()
 void CBio_Player::Spawn()
 {
 	BaseClass::Spawn();
-	Msg( "YOU'RE NOW AN BIOHAZARDOUS PLAYER! MUHAHAHAHAAHARRRRRR!" );
 	SetModel( PLAYER_MDL );
 	EquipSuit( false );
 }

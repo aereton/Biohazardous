@@ -22,3 +22,35 @@
 @PointClass base(Targetname,Angles) studioprop("models/editor/camera.mdl") = bio_camera : "Camera Setup Entity"
 [
 ]
+
+@PointClass base(Targetname, Parentname, Angles, Origin, Global, Studiomodel) studioprop() = bio_door :
+	"Biohazardous' door transitions."
+[
+	hardware(choices) : "Hardware Type" : 1 =
+	[
+		0 : "<None>"
+		1 : "Lever"
+		2 : "Push bar"
+		3 : "Keypad"
+	]
+	spawnflags(flags) =
+	[
+		2048 : "Starts locked" : 0
+		32768 : "Ignore player +USE" : 0
+	]
+
+	// Outputs
+	output OnOpen(void) : "Fired when the door is told to open."
+	output OnLockedUse(void) : "Fired when the the player uses the door, but it's locked."
+
+	//Inputs
+	input Lock(void) : "Lock the door."
+	input Unlock(void) : "Unlock the door."
+	input ToggleLock(void) : "Toggles the doors lock state."
+	input Enable(void) : "Enable interactivity."
+	input Disable(void) : "Disable interactivity."
+	input TestFadeIn(void) : "TestInFade."
+	input TestFadeOut(void) : "TestOutFade."
+	input TestTeleFront(void) : "TestTeleFront."
+	input TestTeleBack(void) : "TestTeleBack."
+]

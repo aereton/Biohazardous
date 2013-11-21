@@ -3529,6 +3529,9 @@
     <ClCompile Include="..\shared\singleplayer_animstate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bio_door.cpp">
+      <Filter>Source Files\Biohazardous\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
