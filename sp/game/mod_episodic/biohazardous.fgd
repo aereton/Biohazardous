@@ -54,3 +54,38 @@
 	input TestTeleFront(void) : "TestTeleFront."
 	input TestTeleBack(void) : "TestTeleBack."
 ]
+
+@SolidClass base(Targetname) = bio_interaction : "Interaction entity"
+[
+	StartDisabled(choices) : "Start Disabled" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+		//Outputs
+	output OnUsed(void) : "Fired when this entity was used/pressed."
+	//Inputs
+	input Enable(void) : "Enable interactivity."
+	input Disable(void) : "Disable interactivity."
+]
+
+@PointClass base(Targetname) = bio_investigation : "Investigation entity"
+[
+	StartDisabled(choices) : "Start Disabled " : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	message(string) : "Message to display."
+	SecondsToHold(integer) : "Seconds to Hold" : 3 : "After time passed, player is regains control."
+	OptionalCamera(string) : "Optional new camera angle."
+	
+	//Outputs
+	output OnTrigger(void) : "Fired when this entity was triggered."
+	output OnNewCameraAngle(void) : "Fired when a new camera entity was set."
+	output OnTimerHit(void) : "Fired when the timer hits its max hold time value."
+	//Inputs
+	input Trigger(void) : "Triggers this entity."
+	input Enable(void) : "Enables this entity."
+	input Disable(void) : "Disables this entity."
+]

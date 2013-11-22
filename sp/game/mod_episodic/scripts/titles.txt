@@ -276,3 +276,25 @@ $fadeout 1.5
 $position -1 0.65
 $position -1 0.3
 
+
+//BIOHAZARDOUS TEXT
+$position -1 0.9
+$effect 2
+$color 255 255 255
+$color2 75 75 75
+$fadein 0.05
+$fxtime 0.2
+$holdtime 2.4
+$fadeout 1.5
+
+//----TEST1---
+
+BIO_TEST1
+{
+Hello World!
+}
+
+BIO_TEST2
+{
+There's nothing of interest..
+}
