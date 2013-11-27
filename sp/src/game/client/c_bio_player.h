@@ -25,6 +25,7 @@ public:
 
 
 	CNetworkVar( bool, m_bIsInterested );
+	CNetworkVar( int, m_nStatisticDoorsOpened );
 
 protected:
 

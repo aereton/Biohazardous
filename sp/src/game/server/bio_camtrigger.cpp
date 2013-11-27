@@ -40,8 +40,6 @@ LINK_ENTITY_TO_CLASS( bio_cam_trigger, CCamTrigger );
 void CCamTrigger::Spawn( void )
 {
 	BaseClass::Spawn();
-
-
 	InitTrigger();
 }
 //==============================================================================
@@ -53,8 +51,6 @@ void CCamTrigger::StartTouch( CBaseEntity *pOther )
 		return;
 	if( !pOther->IsPlayer() )
 		return;
-
-	DevMsg( "Player is in CamTrigger!\n" );
 	FindSetupEnt();
 
 	BaseClass::StartTouch( pOther );
@@ -68,8 +64,6 @@ void CCamTrigger::EndTouch( CBaseEntity *pOther )
 		return;
 	if( !pOther->IsPlayer() )
 		return;
-
-	DevMsg( "Player is not anymore in CamTrigger!\n" );
 
 	BaseClass::EndTouch( pOther );
 }
@@ -94,7 +88,6 @@ void CCamTrigger::FindSetupEnt( void )
 			Warning( "failed to find CamSetupEntity %s.\n", GetEntityName().ToCStr(), STRING( m_CamSetupEntity ) );
 			return;
 		}
-		DevMsg( "Viewsetup created!\n" );
 		//now setup the camera with our found entity!
 		SetupCamera( pEntResult );
 	}

@@ -46,7 +46,8 @@ private:
 	COutputEvent	m_OnNewCameraAngle;
 	COutputEvent	m_OnTimerHit;
 
-	EHANDLE			hOldCam;
+	EHANDLE			m_hOldCam;
+	EHANDLE			m_hPlayer;
 };
 
 BEGIN_DATADESC( CBio_Investigation )
@@ -54,7 +55,8 @@ BEGIN_DATADESC( CBio_Investigation )
 
 	DEFINE_FIELD( m_nSecondsCounter, FIELD_INTEGER ),
 	DEFINE_FIELD( m_bIsInUse, FIELD_BOOLEAN ),
-	DEFINE_FIELD( hOldCam, FIELD_EHANDLE ),
+	DEFINE_FIELD( m_hOldCam, FIELD_EHANDLE ),
+	DEFINE_FIELD( m_hPlayer, FIELD_EHANDLE ),
 
 	DEFINE_KEYFIELD( m_bDisabled, FIELD_BOOLEAN, "StartDisabled" ),
 	DEFINE_KEYFIELD( m_iszMessage, FIELD_STRING, "message" ),
@@ -84,8 +86,10 @@ void CBio_Investigation::InputTrigger(inputdata_t &inputData)
 
 	// Mark as in use
 	m_bIsInUse = true;
+	// Get player
+	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	m_hPlayer = pPlayer; // <- Save it!
 	// Freeze the player
-	CBaseEntity *pPlayer = UTIL_GetLocalPlayer();
 	pPlayer->AddFlag( FL_FROZEN );
 	// Disable AI
 		//TODO!!
@@ -106,19 +110,18 @@ void CBio_Investigation::InputTrigger(inputdata_t &inputData)
 
 void CBio_Investigation::UseOptionalCamera( void )
 {
-	// Get our Player
 	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 	// Get our old camera
 	CBaseEntity *pOldCam = dynamic_cast<CBasePlayer*>(pPlayer);
 	if (!pOldCam) return;
 	pOldCam = pPlayer->GetViewEntity();
-	hOldCam = pOldCam; // <- Save it!
+	m_hOldCam = pOldCam; // <- Save it!
 	// Get our new camera
 	CBaseEntity *pNewCam = gEntList.FindEntityByName( NULL, STRING( m_OptionalCamera ) );
 	// Setup new camera
 	pPlayer->SetViewEntity( pNewCam );
 	// Fire output!
-	m_OnNewCameraAngle.FireOutput( pPlayer, this );
+	m_OnNewCameraAngle.FireOutput( m_hPlayer, this );
 }
 
 void CBio_Investigation::InputEnable(inputdata_t &inputData)
@@ -139,10 +142,8 @@ void CBio_Investigation::TimerThink( void )
 	// See if we've met or corssed our hold value
 	if (m_nSecondsCounter >= m_nSecondsToHold)
 	{
-		// Get the player
-		CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 		// Fire output
-		m_OnTimerHit.FireOutput( pPlayer, this );
+		m_OnTimerHit.FireOutput( m_hPlayer, this );
 		// Reset our counter
 		m_nSecondsCounter = 0;
 
@@ -151,13 +152,14 @@ void CBio_Investigation::TimerThink( void )
 		{
 			// Convert the EHANDLE back to a CBaseEntity pointer
 			CBaseEntity *pOldCam;
-			pOldCam = dynamic_cast<CBaseEntity*>( hOldCam.Get() );
+			pOldCam = dynamic_cast<CBaseEntity*>( m_hOldCam.Get() );
 			// set to previous camera angle
+			CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 			pPlayer->SetViewEntity(pOldCam);
 		}
 
 		// Unfreeze the player
-		pPlayer->RemoveFlag( FL_FROZEN );
+		m_hPlayer->RemoveFlag( FL_FROZEN );
 		// Re-enable AI
 			//TODO!!
 		// Not in use anymore!

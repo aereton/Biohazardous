@@ -24,8 +24,11 @@ public:
 	void GetInterested();
 	void GetUninterested();
 
+	void AddStatisticDoorsOpened();
 
 	CNetworkVar( bool, m_bIsInterested );
+	CNetworkVar( int, m_nStatisticDoorsOpened );
+
 protected:
 
 private:

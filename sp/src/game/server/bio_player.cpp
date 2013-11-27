@@ -12,11 +12,13 @@
 
 BEGIN_DATADESC( CBio_Player )
 	DEFINE_FIELD( m_bIsInterested, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_nStatisticDoorsOpened, FIELD_INTEGER ),
 END_DATADESC()
 
 
 IMPLEMENT_SERVERCLASS_ST( CBio_Player, DT_CBio_Player )
 	SendPropBool( SENDINFO( m_bIsInterested ) ),
+	SendPropInt( SENDINFO( m_nStatisticDoorsOpened ) ),
 END_SEND_TABLE()
 
 
@@ -52,14 +54,21 @@ bool CBio_Player::IsInterested() const
 void CBio_Player::GetInterested()
 {
 	m_bIsInterested = true;
-	// Placeholder - information!
-	DevMsg( "The Player is now interested.\n" );
-	
 }
 
 void CBio_Player::GetUninterested()
 {
 	m_bIsInterested = false;
-	// Placeholder - information!
-	DevMsg( "The Player is no longer interested.\n" );
+}
+
+//------------------------------------------------------------------
+// Statistics counter
+//------------------------------------------------------------------
+void CBio_Player::AddStatisticDoorsOpened( void )
+{
+	// Add one
+	m_nStatisticDoorsOpened++;
+
+	//For Debug: get the value!
+	//DevMsg("You currently have %i doors opened!", m_nStatisticDoorsOpened);
 }

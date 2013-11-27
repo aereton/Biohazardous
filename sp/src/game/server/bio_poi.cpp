@@ -160,9 +160,6 @@ void CPointOfInterest::StartTouch( CBaseEntity *pOther )
 	// Only on clients
 	if( !pOther->IsPlayer() )
 		return;
-	
-	// Placeholder - information!
-	DevMsg( "Intouch!\n" );
 
 	// Think like Platon
 	SetThink( &CPointOfInterest::EnableThink );
@@ -183,9 +180,6 @@ void CPointOfInterest::EndTouch( CBaseEntity *pOther )
 	// Only on clients
 	if( !pOther->IsPlayer() )
 		return;
-
-	// Placeholder - information!
-	DevMsg( "Endtouch!\n" );
 
 	// Headache! Don't think anymore...
 	SetNextThink( TICK_NEVER_THINK );

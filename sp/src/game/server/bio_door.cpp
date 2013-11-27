@@ -1,7 +1,14 @@
+//===== Copyright © 2013, SpotlightEntertainmentStudios, All rights reserved. ========
+//
+// Purpose: DoorTransitionProp V0.1
+//------------------------------------------------------------------------------------
+//			Note:	-
+//====================================================================================
 #include "cbase.h"
 #include "props.h"
 #include "BasePropDoor.h"
 #include "doors.h"
+#include "bio_player.h"
 
 #define DOOR_HARDWARE_GROUP 1
 
@@ -29,7 +36,7 @@ private:
 
 	void FadeOutView(CBaseEntity *pEnt);
 	void FadeInView(CBaseEntity *pEnt);
-	void Transition(CBaseEntity *pEnt);
+	void Transition();
 
 	void TeleportThink();
 	void FadeInThink();
@@ -41,13 +48,11 @@ private:
 	void InputToggleLock(inputdata_t &inputdata);
 	void InputEnable(inputdata_t &inputdata);
 	void InputDisable(inputdata_t &inputdata);
-	// For testing purposes
-	void InputTestFadeIN(inputdata_t &inputdata);
-	void InputTestFadeOUT(inputdata_t &inputdata);
 
 	int		m_nHardwareType;
 
 	EHANDLE m_hActivator;
+	EHANDLE m_hPlayer;
 
 	bool	m_bDisabled;
 	bool	m_bLocked;
@@ -68,15 +73,13 @@ BEGIN_DATADESC( CBioPropDoor )
 
 	DEFINE_KEYFIELD( m_nHardwareType, FIELD_INTEGER, "hardware" ),
 	DEFINE_FIELD( m_hActivator, FIELD_EHANDLE ),
+	DEFINE_FIELD( m_hPlayer, FIELD_EHANDLE ),
 	
 	DEFINE_INPUTFUNC( FIELD_VOID, "Lock", InputLock ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "Unlock", InputUnlock ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "ToggleLock", InputToggleLock ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "Enable", InputEnable ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "Disable", InputDisable ),
-	// For testing purposes
-	DEFINE_INPUTFUNC( FIELD_VOID, "TestFadeIn", InputTestFadeIN ),
-	DEFINE_INPUTFUNC( FIELD_VOID, "TestFadeOut", InputTestFadeOUT ),
 
 	DEFINE_OUTPUT( m_OnOpen, "OnOpen" ),
 	DEFINE_OUTPUT( m_OnLockedUse, "OnLockedUse" ),
@@ -84,7 +87,9 @@ END_DATADESC()
 
 LINK_ENTITY_TO_CLASS( bio_door, CBioPropDoor );
 
-
+//==============================================================================
+// Purpose: Called when spawning, after keyvalues have been handled.
+//==============================================================================
 void CBioPropDoor::Spawn()
 {
 	BaseClass::Spawn();
@@ -113,20 +118,30 @@ void CBioPropDoor::Spawn()
 		CalculateBlockLOS();
 	}
 
+	// Don't think yet
 	SetNextThink( TICK_NEVER_THINK );
 	SetThink( NULL );
 }
 
+//==============================================================================
+// Purpose: Object caps...
+//==============================================================================
 int CBioPropDoor::ObjectCaps()
 {
 	return BaseClass::ObjectCaps() | ( HasSpawnFlags( SF_DOOR_IGNORE_USE ) ? 0 : (FCAP_IMPULSE_USE|FCAP_USE_IN_RADIUS) );
 }
 
+//==============================================================================
+// Purpose: Precaching
+//==============================================================================
 void CBioPropDoor::Precache( void )
 {
 	BaseClass::Precache();
 }
 
+//==============================================================================
+// Purpose: Called when player is pressing [E] on us
+//==============================================================================
 void CBioPropDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
 	// Not if we're disabled by PointOfInterest!
@@ -135,30 +150,43 @@ void CBioPropDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 
 	if( IsDoorLocked() )
 	{
-		DevMsg( "This door is locked! Can't use!" );
 		m_OnLockedUse.FireOutput( pActivator, pCaller );
 	}
 	else
 	{
-		DevMsg( "Successfully used! Opening..." );
 		DoorOpen();
 	}
 }
 
+//==============================================================================
+// Purpose: Fade out function
+//==============================================================================
 void CBioPropDoor::FadeOutView( CBaseEntity *pEnt )
 {
 	color32 black = { 0,0,0,255 };
 	UTIL_ScreenFade( pEnt, black, 0.6f, 0.0f, (FFADE_OUT|FFADE_STAYOUT) );
 }
 
+//==============================================================================
+// Purpose: Fade in function
+//==============================================================================
 void CBioPropDoor::FadeInView( CBaseEntity *pEnt )
 {
 	color32_s clr = { 0,0,0,255 };
 	UTIL_ScreenFade( pEnt, clr, 0.4, 0, FFADE_IN | FFADE_PURGE );
 }
 
-void CBioPropDoor::Transition( CBaseEntity *pEnt )
+//==============================================================================
+// Purpose: Transition initialization
+//==============================================================================
+void CBioPropDoor::Transition()
 {
+	//Get player
+	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	if (!pPlayer) return;
+	m_hPlayer = pPlayer; // <- Save it!
+	//Freeze the player
+	pPlayer->AddFlag( FL_FROZEN );
 	//Fade out the view!
 	SetThink( &CBioPropDoor::FadeOutThink );
 	SetNextThink( gpGlobals->curtime ); // <- now!
@@ -168,15 +196,23 @@ void CBioPropDoor::Transition( CBaseEntity *pEnt )
 
 void CBioPropDoor::FadeInThink()
 {
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 	color32_s clr = { 0,0,0,255 };
-	UTIL_ScreenFade( pPlayer, clr, 0.4, 0, FFADE_IN | FFADE_PURGE );
+	UTIL_ScreenFade( m_hPlayer, clr, 0.4, 0, FFADE_IN | FFADE_PURGE );
+	// Unfreeze player
+	m_hPlayer->RemoveFlag( FL_FROZEN );
+
+	// Add one door in players stats
+	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	if(pPlayer)
+	{
+		CBio_Player *pBioPlayer = dynamic_cast<CBio_Player*>(pPlayer);
+		pBioPlayer->AddStatisticDoorsOpened();
+	}
 }
 void CBioPropDoor::FadeOutThink()
 {
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 	color32 black = { 0,0,0,255 };
-	UTIL_ScreenFade( pPlayer, black, 0.6f, 0.0f, (FFADE_OUT|FFADE_STAYOUT) );
+	UTIL_ScreenFade( m_hPlayer, black, 0.6f, 0.0f, (FFADE_OUT|FFADE_STAYOUT) );
 	//Let's teleport!
 	SetThink( &CBioPropDoor::TeleportThink );
 	SetNextThink( gpGlobals->curtime + 1);
@@ -184,8 +220,7 @@ void CBioPropDoor::FadeOutThink()
 
 void CBioPropDoor::TeleportThink()
 {
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-	Vector vecTarget = pPlayer->GetAbsOrigin() - WorldSpaceCenter();
+	Vector vecTarget = m_hPlayer->GetAbsOrigin() - WorldSpaceCenter();
 	VectorNormalize(vecTarget);
 
 	Vector vecFacing;
@@ -195,7 +230,6 @@ void CBioPropDoor::TeleportThink()
 
 	if (result > 0)
 	{
-		Msg("Player is in front of me!\n");
 		// Player is in front, so teleport him behind me
 		Vector vecBackStart, vecBackStop, vecBackDir;
 		AngleVectors( this->GetAbsAngles(), &vecBackDir );
@@ -205,12 +239,10 @@ void CBioPropDoor::TeleportThink()
 		vecBackStop = vecBackStart + vecBackDir * 24.0f;	//TODO: get closer to the door (maybe 24.0f?)
 
 		//teleport now!
-		pPlayer->SetAbsOrigin( vecBackStop );
-		Msg("Successfully teleported the player behind the door!\n");
+		m_hPlayer->SetAbsOrigin( vecBackStop );
 	}
 	else
 	{
-		Msg("Player is behind me!\n");
 		// Player is behind me, so teleport him in front of me
 		Vector vecFrontStart, vecFrontStop, vecFrontDir;
 		AngleVectors( this->GetAbsAngles(), &vecFrontDir );
@@ -218,51 +250,22 @@ void CBioPropDoor::TeleportThink()
 		vecFrontStop = vecFrontStart + vecFrontDir * 24.0f;	//TODO: get closer to the door (maybe 24.0f?)
 
 		//teleport now!
-		pPlayer->SetAbsOrigin( vecFrontStop );
-		Msg("Successfully teleported the player in front of the door!\n");
+		m_hPlayer->SetAbsOrigin( vecFrontStop );
 	}
 	// Fade in the view again!
 	SetThink( &CBioPropDoor::FadeInThink );
 	SetNextThink( gpGlobals->curtime + 1);
 }
 
-// For testing purposes
-void CBioPropDoor::InputTestFadeOUT(inputdata_t &inputdata)
-{
-	
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-	if (pPlayer)
-	{
-		DevMsg( "Fading out the view..." );
-		FadeOutView(pPlayer);
-	}
-}
-// For testing purposes
-void CBioPropDoor::InputTestFadeIN(inputdata_t &inputdata)
-{
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-	if (pPlayer)
-	{
-		DevMsg( "Fading in in the view..." );
-		FadeInView(pPlayer);
-	}
-}
-
 void CBioPropDoor::DoorOpen( void )
 {
-	DevMsg( "You opened the door!" );
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-	if (pPlayer)
-	{
-		Transition(pPlayer);
-	}
+	Transition();
 }
 
 
 void CBioPropDoor::InputLock(inputdata_t &inputdata)
 {
 	m_bLocked = true;
-	DevMsg( "The door was locked!" );
 }
 
 void CBioPropDoor::InputUnlock(inputdata_t &inputdata)
@@ -274,7 +277,6 @@ void CBioPropDoor::InputUnlock(inputdata_t &inputdata)
 	}
 
 	m_bLocked = false;
-	DevMsg( "The door was UNlocked!" );
 }
 
 void CBioPropDoor::InputToggleLock(inputdata_t &inputdata)
@@ -282,12 +284,10 @@ void CBioPropDoor::InputToggleLock(inputdata_t &inputdata)
 	if (m_bLocked)
 	{
 		m_bLocked = false;
-		DevMsg( "The door was UNlocked!" );
 	}
 	else
 	{
 		m_bLocked = true;
-		DevMsg( "The door was locked!" );
 	}
 }
 
