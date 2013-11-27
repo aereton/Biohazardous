@@ -69,7 +69,8 @@
 	input Disable(void) : "Disable interactivity."
 ]
 
-@PointClass base(Targetname) = bio_investigation : "Investigation entity"
+@PointClass base(Targetname) iconsprite("editor/bio_investigation.vmt") = bio_investigation :
+	"Investigation entity"
 [
 	StartDisabled(choices) : "Start Disabled " : 0 =
 	[

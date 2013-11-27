@@ -283,7 +283,7 @@ $effect 2
 $color 255 255 255
 $color2 75 75 75
 $fadein 0.05
-$fxtime 0.2
+$fxtime 0.06
 $holdtime 2.4
 $fadeout 1.5
 
@@ -297,4 +297,19 @@ Hello World!
 BIO_TEST2
 {
 There's nothing of interest..
+}
+
+//----ALPHADEMO----
+$position -1 0.94
+$holdtime 5.95
+
+INVESTIGATE001_ELEVATOR003_ALPHADEMOMAP
+{
+That doesn't look safe. I should find another way.
+}
+
+$holdtime 1.05
+INVESTIGATE002_CORRIDOR001_ALPHADEMOMAP
+{
+This way is blocked off... A barricade?
 }

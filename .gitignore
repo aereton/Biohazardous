@@ -56,6 +56,8 @@ config.cfg
 # shader files
 *.tmp
 
+sp/game/mod_episodic/particles/
+*.dat
 sp/game/mod_episodic/ep1_gamestats.dat
 sp/game/mod_episodic/save/
 sp/game/mod_episodic/maps/
